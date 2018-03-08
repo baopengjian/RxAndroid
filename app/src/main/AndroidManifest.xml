@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".create.RxCreateActivity" />
+        <activity android:name=".rxbinding.RxBindingActivity"/>
     </application>
 
 </manifest>

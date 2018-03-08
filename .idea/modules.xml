@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/RxAndroid.iml" filepath="$PROJECT_DIR$/RxAndroid.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/RxAndroid.iml" filepath="$PROJECT_DIR$/.idea/RxAndroid.iml" />
+      <module fileurl="file://D:\Android\workspace\RxAndroid\RxAndroid.iml" filepath="D:\Android\workspace\RxAndroid\RxAndroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://D:\Android\workspace\RxAndroid\app\app.iml" filepath="D:\Android\workspace\RxAndroid\app\app.iml" />
     </modules>
   </component>
 </project>
