@@ -8,22 +8,28 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bpj.rxandroid.R;
-import com.jakewharton.rxbinding2.widget.RxTextView;
 
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Scheduler;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Ray on 2018/3/8 .
- *   compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
- *
+ * compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+ * 注意： EditText的搜索逻辑被封装到Search中去了，SearchService起到模拟网络的作用
+ * 可以将Search和SearchService拷贝到一起方便理解
  */
 
-public class RxBindingActivity extends AppCompatActivity{
+public class RxBindingActivity extends AppCompatActivity {
 
     EditText ed;
     TextView tv;
@@ -38,44 +44,55 @@ public class RxBindingActivity extends AppCompatActivity{
         tv = (TextView) findViewById(R.id.tv);
         compositeDisposable = new CompositeDisposable();
 
-        rxBindingEt();
+        //放在Application中
+     /*  RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                Log.d(TAG, "throw throwable="+throwable.getMessage());
+            }
+        });*/
+
+        //对搜索逻辑封装到了Search类中，SearchService模拟网络请求
+       SearchService service = SearchService.getInstance();
+       Disposable disposable = Search.rxBindingEt(ed, service, getDisposableObserver());
+       compositeDisposable.add(disposable);
     }
 
-    /*
-     * 说明
-     * 1. 此处采用了RxBinding：RxTextView.textChanges(name) = 对对控件数据变更进行监听（功能类似TextWatcher），需要引入依赖：compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
-     * 2. 传入EditText控件，输入字符时都会发送数据事件（此处不会马上发送，因为使用了debounce（））
-     * 3. 采用skip(1)原因：跳过 第1次请求 = 初始输入框的空字符状态
-     **/
-    private void rxBindingEt() {
-      Disposable disposable=  RxTextView.textChanges(ed)
-                .debounce(1, TimeUnit.SECONDS)
-                .skip(1)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<CharSequence>() {
-                    @Override
-                    public void onNext(CharSequence charSequence) {
-                        tv.setText("发送给服务器的字符 = " + charSequence.toString());
-                    }
+    /**
+     * 定义搜索结果返回响应的Observer
+     *
+     * @return
+     */
+    private DisposableObserver<List<SearchResultBean>> getDisposableObserver() {
+        return new DisposableObserver<List<SearchResultBean>>() {
+            @Override
+            public void onNext(List<SearchResultBean> strings) {
+                Log.i(">>>", " strings=" + strings);
+                if (strings.isEmpty()) {
+                    tv.setText(null);
+                } else {
+                    tv.setText("发送给服务器的字符 = " + strings.toString());
+                }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, "对Error事件作出响应" );
-                    }
+            }
 
-                    @Override
-                    public void onComplete() {
-                        Log.d(TAG, "对Complete事件作出响应");
-                    }
-                });
+            @Override
+            public void onError(Throwable e) {
+                Log.d(TAG, "对Error事件作出响应");
+            }
 
-        compositeDisposable.add(disposable);
-
+            @Override
+            public void onComplete() {
+                Log.d(TAG, "对Complete事件作出响应");
+            }
+        };
     }
 
     @Override
-    protected void onDestroy() {
-        compositeDisposable.clear();
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
+        if(isFinishing()){
+            compositeDisposable.clear();
+        }
     }
 }
