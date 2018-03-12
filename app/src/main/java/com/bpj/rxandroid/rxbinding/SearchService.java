@@ -40,27 +40,29 @@ public class SearchService implements Search.ISearchService{
         return Observable.create(new ObservableOnSubscribe<List<SearchResultBean>>() {
             @Override
             public void subscribe(ObservableEmitter<List<SearchResultBean>> emitter) throws Exception {
-//                Log.i(">>>"," regix="+regix);
-//
-                /* if (regix.contains("a")) {
-                    SearchResultBean bean1 = new SearchResultBean(regix+"-a11");
-                    SearchResultBean bean2 = new SearchResultBean(regix+"-a22");
-                    list.add(bean1);
-                    list.add(bean2);
-                    Thread.sleep(10000);
-                } else if(!TextUtils.isEmpty(regix)){
-                    SearchResultBean bean1 = new SearchResultBean("11");
-                    SearchResultBean bean2 = new SearchResultBean("22");
-                    SearchResultBean bean3 = new SearchResultBean("33");
-                    list.add(bean1);
-                    list.add(bean2);
-                    list.add(bean3);
-                    Thread.sleep(3000);
-                }*/
-
+                List<SearchResultBean> list = new ArrayList<>();
+                try{
+                    if (regix.contains("a")) {
+                        SearchResultBean bean1 = new SearchResultBean(regix+"-a11");
+                        SearchResultBean bean2 = new SearchResultBean(regix+"-a22");
+                        list.add(bean1);
+                        list.add(bean2);
+                        Thread.sleep(500);
+                    } else if(!TextUtils.isEmpty(regix)){
+                        SearchResultBean bean1 = new SearchResultBean("11");
+                        SearchResultBean bean2 = new SearchResultBean("22");
+                        SearchResultBean bean3 = new SearchResultBean("33");
+                        list.add(bean1);
+                        list.add(bean2);
+                        list.add(bean3);
+                        Thread.sleep(10000);
+                    }
+                }catch (InterruptedException e){
+                    if(!emitter.isDisposed()){
+                        emitter.onError(e);
+                    }
+                }
                 if(!emitter.isDisposed()){
-                    Thread.sleep(10000);
-                    List list = new ArrayList();
                     emitter.onNext(list);
                     emitter.onComplete();
                 }

@@ -15,11 +15,11 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
+       /*RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
                 Log.d("MyApplication", "throw throwable="+throwable.getMessage());
             }
-        });
+        });*/
     }
 }

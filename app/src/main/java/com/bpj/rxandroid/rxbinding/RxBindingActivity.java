@@ -15,6 +15,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -44,18 +45,12 @@ public class RxBindingActivity extends AppCompatActivity {
         tv = (TextView) findViewById(R.id.tv);
         compositeDisposable = new CompositeDisposable();
 
-        //放在Application中
-     /*  RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable throwable) throws Exception {
-                Log.d(TAG, "throw throwable="+throwable.getMessage());
-            }
-        });*/
 
         //对搜索逻辑封装到了Search类中，SearchService模拟网络请求
        SearchService service = SearchService.getInstance();
        Disposable disposable = Search.rxBindingEt(ed, service, getDisposableObserver());
        compositeDisposable.add(disposable);
+
     }
 
     /**
