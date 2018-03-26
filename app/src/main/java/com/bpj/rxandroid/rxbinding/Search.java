@@ -12,7 +12,6 @@ import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
 
 /**
@@ -52,13 +51,7 @@ public class Search {
     public static Observable<CharSequence> getEditTextObservable(EditText et){
         return  RxTextView.textChanges(et) //绑定EditText
                 .skip(1)//去掉第一次选中
-                .debounce(300, TimeUnit.MILLISECONDS)//300毫秒防反跳
-               /* .filter(new Predicate<CharSequence>() {
-                    @Override
-                    public boolean test(CharSequence charSequence) throws Exception {
-                        return charSequence.length() > 0;
-                    }
-                })*/;//长度大于0
+                .debounce(300, TimeUnit.MILLISECONDS);//300毫秒防反跳
     }
 
     interface ISearchService {
