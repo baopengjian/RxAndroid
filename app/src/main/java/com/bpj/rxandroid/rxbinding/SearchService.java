@@ -47,7 +47,7 @@ public class SearchService implements Search.ISearchService{
                         SearchResultBean bean2 = new SearchResultBean(regix+"-a22");
                         list.add(bean1);
                         list.add(bean2);
-                        Thread.sleep(500);
+                        Thread.sleep(200);
                     } else if(!TextUtils.isEmpty(regix)){
                         SearchResultBean bean1 = new SearchResultBean("11");
                         SearchResultBean bean2 = new SearchResultBean("22");
@@ -55,7 +55,7 @@ public class SearchService implements Search.ISearchService{
                         list.add(bean1);
                         list.add(bean2);
                         list.add(bean3);
-                        Thread.sleep(10000);
+                        Thread.sleep(300);
                     }
                 }catch (InterruptedException e){
                     if(!emitter.isDisposed()){

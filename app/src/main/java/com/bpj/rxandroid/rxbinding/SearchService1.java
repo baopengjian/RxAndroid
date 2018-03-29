@@ -44,7 +44,7 @@ public class SearchService1 implements Search1.ISearchService1 {
                         SearchResultBean bean2 = new SearchResultBean(regix + "-a22");
                         list.add(bean1);
                         list.add(bean2);
-                        Thread.sleep(500);
+                        Thread.sleep(200);
                     } else if (!TextUtils.isEmpty(regix)) {
                         SearchResultBean bean1 = new SearchResultBean("11");
                         SearchResultBean bean2 = new SearchResultBean("22");
@@ -84,7 +84,7 @@ public class SearchService1 implements Search1.ISearchService1 {
                     detail.data = "详情搜索数据";
                     result.detail = detail;
                     result.code = 2;
-                    Thread.sleep(800);
+                    Thread.sleep(300);
 
                     if(!emitter.isDisposed()){
                         emitter.onNext(result);

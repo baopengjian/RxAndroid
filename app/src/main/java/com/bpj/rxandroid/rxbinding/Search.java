@@ -51,7 +51,7 @@ public class Search {
     public static Observable<CharSequence> getEditTextObservable(EditText et){
         return  RxTextView.textChanges(et) //绑定EditText
                 .skip(1)//去掉第一次选中
-                .debounce(300, TimeUnit.MILLISECONDS);//300毫秒防反跳
+                .debounce(200, TimeUnit.MILLISECONDS);//300毫秒防反跳
     }
 
     interface ISearchService {
